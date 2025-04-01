@@ -1,0 +1,82 @@
+* { 
+    margin: 0 0 0 0;            /* 상하좌우 값. 두개만있으면 상하. 하나만있으면 전부 */
+    padding: 0;
+}
+
+body {
+    margin-left: .2rem;
+    /* padding-left: .2rem; */
+}
+
+span#upper {
+    font-size: 1.3rem;
+}
+
+span.inner-span {
+    font-size:0.8rem;
+}
+
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 20rem;
+    gap: 6px;
+    border: 1px solid green;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+.btns {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.btns button {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+button[type='submit'] {
+    background-color: green;
+    color: white;
+    border: none;  
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button[type='submit']:hover {
+    background-color: darkgreen;
+}
+
+input {
+    text-align: center;
+    padding: 0.5rem;
+}
+
+ul {
+    list-style: none;
+}
+
+ul li {
+    margin: .1rem 0;
+    padding: .2rem .3rem;
+}
+
+ul > li:nth-child(2) {
+    color: yellow;
+}
+
+ul li:first-child {
+    color: red;
+}
+
+ul li:last-child {
+    color: blue;
+}
+
+/* div {
+    width: 5rem;
+} */
