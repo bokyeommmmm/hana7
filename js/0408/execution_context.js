@@ -1,7 +1,8 @@
+//'use strict'; // strict mode로 하면 또 다르다.
 var gg = 1;  let bb = 2;
 function f1(x,y) {  // cf. const f1 = function(x,y) { …
   var gg = 11;   let bb = 22;
-  console.log('f1>', gg, bb, zz, f2, f2.length); // 3 f2inner2
+  console.log('f1>', gg, bb, zz, f2, f2.length); // 11, 22, indefined [fn] 3 <- 3 f2inner2
   f2('first'); // t,u,v 실행 (이 시점에 nested f2는 hoisting됐지만 <f.o>로 정의되지 않은 상태!) ← inner2
   { 
     const xx = 99; // f1 평가 시 xx는 notInitializedYet(uninitialized) 상태로 block상단에 hoisting.
@@ -22,7 +23,4 @@ let xx = 9;
 if (gg > 0) { var kk = 33; const yy = 9; }
 f1(1,2);   
 console.log(kk, yy);  // ? yy is not defined in global scope  바로 위의 블록스코프 .
-f2('third');  // global f2 실행
-
-
-//strict mode로 하면 또 다르다 .
+f2('third');  // global f2 실행 .
