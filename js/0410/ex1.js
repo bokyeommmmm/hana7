@@ -1,32 +1,34 @@
-const weeks = ["일", "월", "화", "수", "목", "금", "토"];
+// const weeks = ["일", "월", "화", "수", "목", "금", "토"];
 
+// const getNextWeek = (() => {
+//   let widx = -1;
+//   return () => {xs
+//     widx += 1;
+//     if (widx >= weeks.length) widx = 0;
+//     return `${weeks[widx]}요일`;
+//   };
+// })();
 const getNextWeek = (() => {
+  const weeks = ["일", "월", "화", "수", "목", "금", "토"];
   let widx = -1;
-  return () => {
-    widx += 1;
-    if (widx >= weeks.length) widx = 0;
-    return `${weeks[widx]}요일`;
-  };
+  return () => `${weeks[++widx]}요일`;
 })();
-
-let cnt = 0;
+let cntx = 0;
 const intl = setInterval(() => {
-  console.log("call", cnt, getNextWeek());
-  if (++cnt === 8) clearInterval(intl);
+  console.log("call", cntx, getNextWeek());
+  if (++cntx === 7) clearInterval(intl);
 }, 1000);
 
-return;
+return; //-------------------------------------------------------------------------------------------
 const before = () => console.log("before....");
 const after = (result) => console.log("after...", result);
 
-const template = (fn) => {
+const templete = (f) => {
+  //after를 백그라운드에서 돌아가게 해.
   return (...args) => {
     before();
-    const result = fn(...args);
-    setTimeout(function () {
-      after(result);
-    }, 1000);
-
+    const result = f(...args);
+    setImmediate(after, result);
     return result;
   };
 };
@@ -34,46 +36,47 @@ const someFn = (name, greeting) => `${greeting}, ${name}`;
 const someFn2 = (id, nickname, email, level) =>
   `${id}/${nickname}/${email}/${level}`;
 
-const temp = template(someFn);
-const temp2 = template(someFn2);
+const temp = templete(someFn);
+const temp2 = templete(someFn2);
 
 console.log("temp1>>", temp("sico", "hello"));
 console.log("temp2>>", temp2(1, "sico", "sico@gmail.com", 5));
 
-return;
-function once(fn) {
-  let called = false;
-  let result;
+return; //--------------------------------------------------------------------------------------------------------
 
-  return function (...args) {
-    if (!called) {
-      called = true;
-      result = fn.apply(this, args); //외부에서 전달된 context 유지. 원래 this는 once에서 리턴된 함수가 어디서 호출되느냐에 따라 달라짐.
-      return result;
-    }
-    return undefined;
+const once = (f) => {
+  let done = false;
+  return (...args) => {
+    if (done) return;
+    done = true;
+    return f(...args);
   };
-}
+};
 
-function onceAgain(fn, rebirthDelay = 1000) {
-  let available = true;
-  return function (...args) {
-    if (!available) return;
-    available = false;
-    setTimeout(() => (available = true), rebirthDelay);
-    return fn.apply(this, args);
+const onceAgain = (f, rebirthDelay) => {
+  let done = false;
+  return (...args) => {
+    if (done) return;
+    done = true;
+    setTimeout(() => (done = false), rebirthDelay);
+    return f(...args);
   };
-}
+};
+const fn1sec = onceAgain(fivePart, 1000);
+let cnt = 0;
+
+const cb = () => console.log(`${++cnt / 10}초`, fn1sec(cnt, 0.1));
+setInterval(cb, 100);
 
 function fivePart(x, y) {
   return `fivePart ${x}, ${y}, id: ${this.id}`;
 }
-const fn = once(fivePart.bind({ id: 11 }));
-console.log(fn(1, 2));
+const fnx = once(fivePart.bind({ id: 11 }));
+console.log(fnx(1, 2));
 const fn2 = once(fivePart);
 console.log(fn2.bind({ id: 22 })(3, 4));
 
-const say = onceAgain(() => console.log("✅ 실행됨!"), 1000);
+const say = onceAgain(() => console.log(" 실행됨!"), 1000);
 
 say();
 say();
