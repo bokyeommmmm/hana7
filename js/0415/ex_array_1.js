@@ -31,7 +31,6 @@ assert.deepStrictEqual(deleteArray(users, "name", "Lee"), [Hong, Kim]);
 const reapaintUsers = users.filter((user) => user.id !== 2);
 console.log("console.log(); ~ reapaintUsers:", [...reapaintUsers]);
 //ex1
-return;
 console.log("==========ex1=============");
 function push(array, ...args) {
   return [...array, ...args];
@@ -57,3 +56,18 @@ assert.deepStrictEqual(shift(arr, 2), [
   [3, 4],
 ]); // 2개 shift
 assert.deepStrictEqual(arr, [1, 2, 3, 4]); //순수함수 test.
+
+console.log("===============0415========================");
+
+//ex1) 배열의 각 원소를 String으로 변환하시오.
+// const arr = [1, 2, 3, true];
+arr.push(true);
+
+const ret1 = arr.map(String); // String(n)
+assert.deepStrictEqual(ret1, ["1", "2", "3", "4", "true"]);
+
+// ex2) 다음과 같이 작동하는 classNames 함수를 작성하시오.
+const classNames = (...args) => args.filter(Boolean).join(" ");
+const ret2 = classNames("", "a b c", "d", "", "e", undefined);
+
+assert.strictEqual(ret2, "a b c d e");
