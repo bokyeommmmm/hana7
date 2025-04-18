@@ -1,0 +1,21 @@
+{
+  "name": "hana7_kyeom",
+  "version": "0.1.0",
+  "description": "hanaro JS study",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "keywords": [
+    "JS"
+  ],
+  "author": "bokyeommmmm",
+  "license": "ISC",
+  "dependencies": {
+    "date-fns": "^4.1.0",
+    "hana7_kyeom": "^0.1.0",
+    "moment": "^2.30.1"
+  }
+}
