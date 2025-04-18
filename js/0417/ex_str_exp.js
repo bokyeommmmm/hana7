@@ -73,16 +73,39 @@ const swapCase정답 = (str) =>
   );
 
 const swapCase = (str) =>
-  str?.replace(/([A-Z\s]*)([a-z]*)/g, (foundStr, upper, lower) => {
-    // if (!foundStr?.trim()) return '';
-    console.log("***>>", foundStr, upper, lower);
+  str.replace(/([A-Z\s\d]*)([a-z]*)/g, (foundStr, upper, lower) => {
+    if (!foundStr?.trim()) return "";
+    console.log("call>>", foundStr, upper, lower);
     return `${upper.toLowerCase()}${lower.toUpperCase()}`;
   });
-console.log(swapCase("Senior abc Coding Learning JS"));
-return;
+console.log(swapCase("abc Sen,ior efg Coding Learning JS"));
 
 assert.equal(
-  swapCase("Senior abc Coding Learning JS"),
-  "sENIOR cODING lEARNING js"
+  swapCase("abc Senior efg Coding Learning JS"),
+  "ABC sENIOR EFG cODING lEARNING js"
 );
-assert.equal(swapCase("Hanaro 7 Class"), "hANARO 7 cLASS");
+assert.equal(swapCase("Hanaro 7기 Class"), "hANARO 7기 cLASS");
+
+console.log("- - - - -  - - - - - -");
+const telfmt = (telno) => {
+  const len = telno?.length ?? 0;
+  if (len <= 7) return telno;
+
+  if (len === 8) return `${telno.substring(0, 4)}-${telno.substring(4)}`;
+
+  let a = telno.startsWith("02") ? 2 : len > 10 ? len - 8 : 3;
+  let b = len - a - 4;
+  const reg = new RegExp(`(\\d{${a}})(\\d{${b}})(\\d{4})`);
+  return telno.replace(reg, "$1-$2-$3");
+};
+
+assert.deepStrictEqual(telfmt("0704570"), "0704570");
+assert.deepStrictEqual(telfmt("15771577"), "1577-1577");
+
+assert.deepStrictEqual(telfmt("01012345678"), "010-1234-5678");
+assert.deepStrictEqual(telfmt("010-123-4567"), "010-123-4567");
+assert.deepStrictEqual(telfmt("0212345678"), "02-1234-5678");
+assert.deepStrictEqual(telfmt("021234567"), "02-123-4567");
+assert.deepStrictEqual(telfmt("0331234567"), "033-123-4567");
+assert.deepStrictEqual(telfmt("07012341234"), "070-1234-1234");
+assert.deepStrictEqual(telfmt("050712345678"), "0507-1234-5678");
