@@ -1,7 +1,6 @@
 const isStringNumber = (value: unknown): value is [string, number] => {
   return (
     Array.isArray(value) &&
-    value.length === 2 &&
     typeof value[0] === "string" &&
     typeof value[1] === "number"
   );
@@ -13,7 +12,7 @@ const f1 = (value: number | string | boolean | [string, number]) => {
     console.log(value[0].toUpperCase(), value[1].toFixed());
   }
 };
-
+f1(["item", 1000]);
 //------------------------------------------------------------------------------
 
 interface Animal {}
@@ -32,7 +31,8 @@ class Retriever implements Dog {
 
 function isDog(a: Animal): a is Dog {
   //   <이 부분을 작성하시오>
-  return typeof (a as any).name === "string";
+  //   return typeof (a as any).name === "string";
+  return "name" in a && typeof a.name === "string";
 }
 
 const a = new Retriever("king");
@@ -62,7 +62,8 @@ const constCart = {
 //constCart.X는 number가 아니라 리터럴 1
 
 type T3 = 1 | 2 | 3;
-type T4 = (typeof constCart)[keyof typeof constCart];
+type ConstCart = typeof constCart;
+type T4 = ConstCart[keyof ConstCart];
 
 //-------------------------------------------------------------------------------
 //다음에서 '가', '나', '다' 어떤 걸 throw 해도 에러 메시지를 출력하도록 (라) 부분을 수정하시오. (type predicate)
