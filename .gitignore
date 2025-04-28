@@ -3,3 +3,4 @@ ttt
 *.local
 c.txt
 dist
+/linux/data*
