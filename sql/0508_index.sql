@@ -23,6 +23,7 @@ alter table emp add column mobile varchar(11);
 update Emp set mobile=concat('0100000', lpad(id,4,0));
 
 select * from emp;
+
 -- 
 -- 
 -- ex2) mobile 뒷자리 4개를 검색할 수 있는 functional index 생성하시오.
@@ -166,18 +167,20 @@ explain select * from emptest where id = 100;
 -- drop table emptest;
 -- ex2) 위에서 만든 TestEmp의 partition2(id값 100~199)를 지워보세요. 데이터가 어떻게 변하나요?
 alter table emptest drop partition p2;
-select * from emptest; -- id 100~ 199 사라짐.
+select * from emptest; 
+-- A. id 100~ 199 사라짐.
+
 -- ex3) 다시 id 150인 데이터를 insert 해 보세요. 어느 partition에 들어가나요? 그리고 partition3을 200을 기준으로 다시 나눠보세요.
 insert into emptest(id,ename,dept, salary, mobile) select 150, '김150수',dept,salary,'01012340150' from emptest where id =2;
 explain select * from emptest where id =150;
--- 잘 들어간다 p3에
+-- A. 잘 들어간다 p3에
 Alter table emptest
     REORGANIZE Partition p3 INTO (
         partition p2 values less than (200),
         partition p3 values less than MAXVALUE
     );
 explain select * from emptest where id =150;
--- 다시 p2로 들어감 .    
+-- A.다시 p2로 들어감 .    
 
  rename table emp to empbackup;
  rename table empbackup to emp;
