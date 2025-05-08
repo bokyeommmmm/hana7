@@ -29,12 +29,11 @@ select remark-> '$.id', remark ->'$.age',
   from emp
   -- where 33 member of (remark->'$.age');
   where json_object('id',1,'name','유세차') member of (remark->'$.fam');
-  
+
 select JSON_EXTRACT(remark, "$.id"), remark->'$.k',
 JSON_UNQUOTE(JSON_EXTRACT(remark, "$.id")), remark->>'$.k',
 json_value(remark,'$.id'),json_type(remark->'$.age')
 from emp where id<=5;
-
   
 alter table Emp add index index_Emp_remark_famxx ((
   cast(remark->>'$.fam[*].name' as char(255) array)
@@ -75,4 +74,3 @@ where json_length(e.remark->'$.fam')>0;
 
 select json_objectagg(id,dname) From dept d;
 -- 두개의 컬럼이 있을때 key , value로 하나의 json 데이터로 통합?
-
