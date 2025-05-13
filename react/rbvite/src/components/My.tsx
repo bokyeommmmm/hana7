@@ -1,8 +1,8 @@
-// My.tsx
-import { useRef, useState, type FormEvent } from "react";
 import type { Cart, LoginFn, Session } from "../App";
 import Login from "./Login";
 import Profile from "./Profile";
+import Item from "./Item";
+import { useState, type RefObject } from "react";
 
 type Props = {
   session: Session;
@@ -11,6 +11,7 @@ type Props = {
   removeItem: (id: number) => void;
   addItem: (name: string, price: number) => void;
   editItem: (item: Cart) => void;
+  logoutButtonRef: RefObject<HTMLButtonElement | null>;
 };
 
 export default function My({
@@ -20,107 +21,49 @@ export default function My({
   removeItem,
   addItem,
   editItem,
+  logoutButtonRef,
 }: Props) {
-  const itemNameRef = useRef<HTMLInputElement>(null);
-  const itemPriceRef = useRef<HTMLInputElement>(null);
-  const [workingItem, setWorkingItem] = useState<Cart | null>(null);
-
-  const submitItem = (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
-    const name = itemNameRef.current?.value;
-    const price = itemPriceRef.current?.value;
-    if (!name) {
-      alert("상품명을 입력하세요!");
-      itemNameRef.current?.focus();
-      return;
-    }
-
-    if (!price) {
-      alert("금액을 입력하세요!");
-      itemPriceRef.current?.focus();
-      return;
-    }
-
-    if (workingItem) {
-      editItem({ id: workingItem.id, name, price: +price });
-      setWorkingItem(null);
-    } else {
-      addItem(name, +price);
-    }
-
-    if (itemNameRef.current && itemPriceRef.current) {
-      itemNameRef.current.value = "";
-      itemPriceRef.current.value = "3000";
-      itemNameRef.current.focus();
-    }
-  };
+  const [isAdding, setAdding] = useState(false);
+  const toggleAdding = () => setAdding(!isAdding);
 
   return (
     <>
       {loginUser ? (
-        <Profile loginUser={loginUser} logout={logout} />
+        <Profile
+          loginUser={loginUser}
+          logout={logout}
+          logoutButtonRef={logoutButtonRef}
+        />
       ) : (
         <Login login={login} />
       )}
 
       <div>
-        <h1>{workingItem?.name}</h1>
         <ul>
           {cart.map((item) => (
             <li key={item.id}>
-              <a
-                href="#"
-                onClick={() => {
-                  setWorkingItem(item);
-                  if (itemNameRef.current && itemPriceRef.current) {
-                    itemNameRef.current.value = item.name;
-                    itemPriceRef.current.value = `${item.price}`;
-                  }
-                }}
-              >
-                {item.id}. {item.name} ({item.price.toLocaleString()})
-              </a>
-              <button onClick={() => removeItem(item.id)} className="p-sm">
-                x
-              </button>
+              <Item
+                item={item}
+                removeItem={removeItem}
+                addItem={addItem}
+                editItem={editItem}
+              />
             </li>
           ))}
+          {isAdding ? (
+            <li>
+              <Item
+                item={{ id: 0, name: "", price: 3000 }}
+                removeItem={removeItem}
+                addItem={addItem}
+                editItem={editItem}
+                toggleAdding={toggleAdding}
+              />
+            </li>
+          ) : (
+            <button onClick={() => setAdding(true)}>ADD</button>
+          )}
         </ul>
-
-        {workingItem ? (
-          <form onSubmit={submitItem}>
-            <input
-              type="text"
-              ref={itemNameRef}
-              className="w-sm"
-              placeholder="상품명..."
-            />
-            <input
-              type="number"
-              ref={itemPriceRef}
-              placeholder="금액..."
-              className="w-sm"
-            />
-            <button type="submit">수정</button>
-          </form>
-        ) : (
-          <form onSubmit={submitItem}>
-            <input
-              type="text"
-              ref={itemNameRef}
-              className="w-sm"
-              placeholder="상품명..."
-            />
-            <input
-              type="number"
-              ref={itemPriceRef}
-              defaultValue="3000"
-              placeholder="금액..."
-              className="w-sm"
-            />
-            <button type="submit">추가</button>
-          </form>
-        )}
       </div>
     </>
   );

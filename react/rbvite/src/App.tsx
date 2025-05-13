@@ -1,7 +1,6 @@
-//App.tsx
-import { useState } from "react";
+import { useRef, useState } from "react";
 import "./App.css";
-import Hello from "./components/Hello";
+import Hello, { type HelloHandler } from "./components/Hello";
 import My from "./components/My";
 
 export type LoginUser = {
@@ -35,6 +34,9 @@ const SampleSession: Session = {
 function App() {
   const [session, setSession] = useState<Session>(SampleSession);
   const [count, setCount] = useState(0);
+  const helloButtonRef = useRef<HTMLButtonElement>(null);
+  const logoutButtonRef = useRef<HTMLButtonElement>(null);
+  const helloHandlerRef = useRef<HelloHandler>(null);
 
   const plusCount = () => setCount((c) => c + 1);
   const login = (id: number, name: string) => {
@@ -55,6 +57,7 @@ function App() {
 
   const addItem = (name: string, price: number) => {
     const id = Math.max(...session.cart.map((item) => item.id), 0) + 1;
+    console.log("🚀 name:", id, name, price);
     setSession({ ...session, cart: [...session.cart, { id, name, price }] });
   };
 
@@ -77,10 +80,26 @@ function App() {
         removeItem={removeItem}
         addItem={addItem}
         editItem={editItem}
+        logoutButtonRef={logoutButtonRef}
       />
-      <Hello name={"홍길동"} age={33} plusCount={plusCount}>
+      <Hello
+        name={"홍길동"}
+        age={33}
+        plusCount={plusCount}
+        helloButtonRef={helloButtonRef}
+        ref={helloHandlerRef}
+      >
         반갑습니다!
       </Hello>
+      <button onClick={() => helloButtonRef.current?.click()}>
+        Ckick Hello
+      </button>
+      <button onClick={() => logoutButtonRef.current?.click()}>
+        Login in App
+      </button>
+      <button onClick={() => helloHandlerRef.current?.sayHello()}>
+        sayHello
+      </button>
     </>
   );
 }
