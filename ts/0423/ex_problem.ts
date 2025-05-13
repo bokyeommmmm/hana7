@@ -1,7 +1,6 @@
 const isStringNumber = (value: unknown): value is [string, number] => {
   return (
     Array.isArray(value) &&
-    value.length === 2 &&
     typeof value[0] === "string" &&
     typeof value[1] === "number"
   );
@@ -13,7 +12,7 @@ const f1 = (value: number | string | boolean | [string, number]) => {
     console.log(value[0].toUpperCase(), value[1].toFixed());
   }
 };
-
+f1(["item", 1000]);
 //------------------------------------------------------------------------------
 
 interface Animal {}
@@ -32,7 +31,8 @@ class Retriever implements Dog {
 
 function isDog(a: Animal): a is Dog {
   //   <이 부분을 작성하시오>
-  return typeof (a as any).name === "string";
+  //   return typeof (a as any).name === "string";
+  return "name" in a && typeof a.name === "string";
 }
 
 const a = new Retriever("king");
@@ -62,7 +62,8 @@ const constCart = {
 //constCart.X는 number가 아니라 리터럴 1
 
 type T3 = 1 | 2 | 3;
-type T4 = (typeof constCart)[keyof typeof constCart];
+type ConstCart = typeof constCart;
+type T4 = ConstCart[keyof ConstCart];
 
 //-------------------------------------------------------------------------------
 //다음에서 '가', '나', '다' 어떤 걸 throw 해도 에러 메시지를 출력하도록 (라) 부분을 수정하시오. (type predicate)
@@ -71,13 +72,7 @@ try {
   // throw 'some string error!!!';        // 나
   throw ["some", "array", "error"]; // 다
 } catch (error) {
-  if (error instanceof Error) {
-    //Error 객체일 경우 → .message 출력
-    console.log(error.message);
-  } else {
-    //그 외 (string, array, 등) → 그 자체 출력
-    console.log(error);
-  }
+  console.log(error instanceof Error ? error.message : error);
 }
 //-------------------------------------------------------------------------------
 
@@ -85,6 +80,7 @@ try {
 // 숫자 배열이면 → 인덱스 범위로 삭제
 // 객체 배열이면 → 속성 값 기준으로 삭제하는
 // 다형적(다기능) 배열 필터링 함수를 구현하라는 문제예요!
+
 type TPropertyKeyType = string | number | symbol;
 type TUser = { [key: string]: string | number };
 
@@ -124,7 +120,7 @@ const users = [
   { id: 2, name: "Kim" },
   { id: 3, name: "Lee" },
 ];
-
+console.log("==");
 console.log(deleteArray(users, 2)); // [Hong, Kim]
 console.log(deleteArray(users, 1, 2)); // [Hong, Lee]
 console.log(deleteArray(users, "id", 2)); // [Hong, Lee]

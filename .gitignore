@@ -2,3 +2,6 @@ node_modules
 ttt
 *.local
 c.txt
+dist
+/linux/data*
+/sql/mysql

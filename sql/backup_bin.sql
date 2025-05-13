@@ -1,0 +1,83 @@
+# The proper term is pseudo_replica_mode, but we use this compatibility alias
+# to make the statement usable on server versions 8.0.24 and older.
+/*!50530 SET @@SESSION.PSEUDO_SLAVE_MODE=1*/;
+/*!50003 SET @OLD_COMPLETION_TYPE=@@COMPLETION_TYPE,COMPLETION_TYPE=0*/;
+DELIMITER /*!*/;
+# at 4
+#250508 17:05:04 server id 1  end_log_pos 126 CRC32 0x3e8b6a65 	Start: binlog v 4, server v 8.0.42 created 250508 17:05:04
+# Warning: this binlog is either in use or was not closed properly.
+BINLOG '
+sGUcaA8BAAAAegAAAH4AAAABAAQAOC4wLjQyAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAEwANAAgAAAAABAAEAAAAYgAEGggAAAAICAgCAAAACgoKKioAEjQA
+CigAAWVqiz4=
+'/*!*/;
+# at 157
+#250508 17:06:32 server id 1  end_log_pos 236 CRC32 0x1320d268 	Anonymous_GTID	last_committed=0	sequence_number=1	rbr_only=yes	original_committed_timestamp=1746691592268795	immediate_commit_timestamp=1746691592268795	transaction_length=305
+/*!50718 SET TRANSACTION ISOLATION LEVEL READ COMMITTED*//*!*/;
+# original_commit_timestamp=1746691592268795 (2025-05-08 17:06:32.268795 KST)
+# immediate_commit_timestamp=1746691592268795 (2025-05-08 17:06:32.268795 KST)
+/*!80001 SET @@session.original_commit_timestamp=1746691592268795*//*!*/;
+/*!80014 SET @@session.original_server_version=80042*//*!*/;
+/*!80014 SET @@session.immediate_server_version=80042*//*!*/;
+SET @@SESSION.GTID_NEXT= 'ANONYMOUS'/*!*/;
+# at 236
+#250508 17:06:32 server id 1  end_log_pos 315 CRC32 0xb7acd97c 	Query	thread_id=9	exec_time=0	error_code=0
+SET TIMESTAMP=1746691592/*!*/;
+SET @@session.pseudo_thread_id=9/*!*/;
+SET @@session.foreign_key_checks=1, @@session.sql_auto_is_null=0, @@session.unique_checks=1, @@session.autocommit=1/*!*/;
+SET @@session.sql_mode=1168113696/*!*/;
+SET @@session.auto_increment_increment=1, @@session.auto_increment_offset=1/*!*/;
+/*!\C utf8mb4 *//*!*/;
+SET @@session.character_set_client=255,@@session.collation_connection=255,@@session.collation_server=224/*!*/;
+SET @@session.lc_time_names=0/*!*/;
+SET @@session.collation_database=DEFAULT/*!*/;
+/*!80011 SET @@session.default_collation_for_utf8mb4=255*//*!*/;
+BEGIN
+/*!*/;
+# at 315
+#250508 17:06:32 server id 1  end_log_pos 376 CRC32 0xb2b8bf53 	Table_map: `schooldb`.`test` mapped to number 167
+# has_generated_invisible_primary_key=0
+# at 376
+#250508 17:06:32 server id 1  end_log_pos 431 CRC32 0x5e5367d0 	Write_rows: table id 167 flags: STMT_END_F
+
+BINLOG '
+CGYcaBMBAAAAPQAAAHgBAAAAAKcAAAAAAAEACHNjaG9vbGRiAAR0ZXN0AAMDDwECfAAAAQHAAgHg
+U7+4sg==
+CGYcaB4BAAAANwAAAK8BAAAAAKcAAAAAAAEAAgAD/wAGAAAAA2JiYgUABwAAAANjY2MG0GdTXg==
+'/*!*/;
+# at 431
+#250508 17:06:32 server id 1  end_log_pos 462 CRC32 0x5237fdd0 	Xid = 1521
+COMMIT/*!*/;
+# at 462
+#250508 17:06:33 server id 1  end_log_pos 541 CRC32 0x98ab3a71 	Anonymous_GTID	last_committed=1	sequence_number=2	rbr_only=yes	original_committed_timestamp=1746691593239534	immediate_commit_timestamp=1746691593239534	transaction_length=315
+/*!50718 SET TRANSACTION ISOLATION LEVEL READ COMMITTED*//*!*/;
+# original_commit_timestamp=1746691593239534 (2025-05-08 17:06:33.239534 KST)
+# immediate_commit_timestamp=1746691593239534 (2025-05-08 17:06:33.239534 KST)
+/*!80001 SET @@session.original_commit_timestamp=1746691593239534*//*!*/;
+/*!80014 SET @@session.original_server_version=80042*//*!*/;
+/*!80014 SET @@session.immediate_server_version=80042*//*!*/;
+SET @@SESSION.GTID_NEXT= 'ANONYMOUS'/*!*/;
+# at 541
+#250508 17:06:33 server id 1  end_log_pos 629 CRC32 0xc90d84f5 	Query	thread_id=9	exec_time=0	error_code=0
+SET TIMESTAMP=1746691593/*!*/;
+BEGIN
+/*!*/;
+# at 629
+#250508 17:06:33 server id 1  end_log_pos 690 CRC32 0xf9d784fc 	Table_map: `schooldb`.`test` mapped to number 167
+# has_generated_invisible_primary_key=0
+# at 690
+#250508 17:06:33 server id 1  end_log_pos 746 CRC32 0x372b71a8 	Update_rows: table id 167 flags: STMT_END_F
+
+BINLOG '
+CWYcaBMBAAAAPQAAALICAAAAAKcAAAAAAAEACHNjaG9vbGRiAAR0ZXN0AAMDDwECfAAAAQHAAgHg
+/ITX+Q==
+CWYcaB8BAAAAOAAAAOoCAAAAAKcAAAAAAAEAAgAD//8ABwAAAANjY2MGAAcAAAADQ0NDBqhxKzc=
+'/*!*/;
+# at 746
+#250508 17:06:33 server id 1  end_log_pos 777 CRC32 0xb9c5e674 	Xid = 1523
+COMMIT/*!*/;
+SET @@SESSION.GTID_NEXT= 'AUTOMATIC' /* added by mysqlbinlog */ /*!*/;
+DELIMITER ;
+# End of log file
+/*!50003 SET COMPLETION_TYPE=@OLD_COMPLETION_TYPE*/;
+/*!50530 SET @@SESSION.PSEUDO_SLAVE_MODE=0*/;
