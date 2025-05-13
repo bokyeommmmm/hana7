@@ -17,7 +17,7 @@ export default function Login({ login, loginHandlerRef }: Props) {
   const idRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
 
-  const loginHandler = {
+  const loginHandler: LoginHandler = {
     loginCheck() {
       const id = Number(idRef.current?.value);
       const name = nameRef.current?.value;

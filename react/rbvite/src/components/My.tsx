@@ -1,3 +1,4 @@
+//My.tsx
 import type { Cart, LoginFn, Session } from "../App";
 import Login, { type LoginHandler } from "./Login";
 import Profile from "./Profile";
@@ -12,7 +13,7 @@ type Props = {
   addItem: (name: string, price: number) => void;
   editItem: (item: Cart) => void;
   logoutButtonRef: RefObject<HTMLButtonElement | null>;
-  loginHandlerRef: ForwardedRef<LoginHandler>;
+  loginHandlerRef: ForwardedRef<LoginHandler | null>;
 };
 
 export default function My({
