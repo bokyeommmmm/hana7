@@ -1,12 +1,38 @@
 //Login.tsx
-import { useRef, type FormEvent } from "react";
+import {
+  useImperativeHandle,
+  useRef,
+  type FormEvent,
+  type ForwardedRef,
+} from "react";
 import type { LoginFn } from "../App";
 
-type Props = { login: LoginFn };
+type Props = { login: LoginFn; loginHandlerRef: ForwardedRef<LoginHandler> };
 
-export default function Login({ login }: Props) {
+export type LoginHandler = {
+  loginCheck: () => void;
+};
+
+export default function Login({ login, loginHandlerRef }: Props) {
   const idRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
+
+  const loginHandler = {
+    loginCheck() {
+      const id = Number(idRef.current?.value);
+      const name = nameRef.current?.value;
+      if (!id || isNaN(id)) {
+        alert("Input the id!");
+        idRef.current?.focus();
+        return;
+      } else if (!name) {
+        alert("Input the name!");
+        nameRef.current?.focus();
+        return;
+      }
+    },
+  };
+  useImperativeHandle(loginHandlerRef, () => loginHandler);
 
   const makeLogin = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();

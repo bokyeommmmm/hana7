@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import "./App.css";
 import Hello, { type HelloHandler } from "./components/Hello";
 import My from "./components/My";
+import type { LoginHandler } from "./components/Login";
 
 export type LoginUser = {
   id: number;
@@ -37,6 +38,7 @@ function App() {
   const helloButtonRef = useRef<HTMLButtonElement>(null);
   const logoutButtonRef = useRef<HTMLButtonElement>(null);
   const helloHandlerRef = useRef<HelloHandler>(null);
+  const loginHandlerRef = useRef<LoginHandler>(null);
 
   const plusCount = () => setCount((c) => c + 1);
   const login = (id: number, name: string) => {
@@ -81,6 +83,7 @@ function App() {
         addItem={addItem}
         editItem={editItem}
         logoutButtonRef={logoutButtonRef}
+        loginHandlerRef={loginHandlerRef}
       />
       <Hello
         name={"홍길동"}
@@ -99,6 +102,9 @@ function App() {
       </button>
       <button onClick={() => helloHandlerRef.current?.sayHello()}>
         sayHello
+      </button>
+      <button onClick={() => loginHandlerRef.current?.loginCheck()}>
+        loginCheck
       </button>
     </>
   );
