@@ -1,44 +1,24 @@
-//My.tsx
-import type { Cart, LoginFn, Session } from "../App";
-import Login, { type LoginHandler } from "./Login";
+import Login from "./Login";
 import Profile from "./Profile";
 import Item from "./Item";
-import { useState, type ForwardedRef, type RefObject } from "react";
+import { useState, type RefObject } from "react";
+import { useSession } from "../contexts/session/useSession";
 
 type Props = {
-  session: Session;
-  login: LoginFn;
-  logout: () => void;
-  removeItem: (id: number) => void;
-  addItem: (name: string, price: number) => void;
-  editItem: (item: Cart) => void;
   logoutButtonRef: RefObject<HTMLButtonElement | null>;
-  loginHandlerRef: ForwardedRef<LoginHandler | null>;
 };
 
-export default function My({
-  session: { loginUser, cart },
-  login,
-  logout,
-  removeItem,
-  addItem,
-  editItem,
-  logoutButtonRef,
-  loginHandlerRef,
-}: Props) {
+export default function My({ logoutButtonRef }: Props) {
   const [isAdding, setAdding] = useState(false);
   const toggleAdding = () => setAdding(!isAdding);
-
+  const { addItem, removeItem, editItem, session } = useSession();
+  const { loginUser, cart } = session;
   return (
     <>
       {loginUser ? (
-        <Profile
-          loginUser={loginUser}
-          logout={logout}
-          logoutButtonRef={logoutButtonRef}
-        />
+        <Profile loginUser={loginUser} logoutButtonRef={logoutButtonRef} />
       ) : (
-        <Login login={login} loginHandlerRef={loginHandlerRef} />
+        <Login />
       )}
 
       <div>
