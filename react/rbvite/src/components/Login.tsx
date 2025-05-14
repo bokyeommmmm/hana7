@@ -1,60 +1,63 @@
-//Login.tsx
-import {
-  useImperativeHandle,
-  useRef,
-  type FormEvent,
-  type ForwardedRef,
-} from "react";
-import type { LoginFn } from "../App";
-
-type Props = { login: LoginFn; loginHandlerRef: ForwardedRef<LoginHandler> };
+import { useImperativeHandle, useRef, useState, type FormEvent } from "react";
+import { useSession } from "../contexts/session/useSession";
 
 export type LoginHandler = {
-  loginCheck: () => void;
+  str: string;
+  getName: () => string;
+  makeX: (n: number) => void;
+  focusId: () => void;
+  validate: () => boolean;
 };
 
-export default function Login({ login, loginHandlerRef }: Props) {
+export default function Login() {
+  const [x, setX] = useState(0);
   const idRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
+  const { loginHandlerRef } = useSession();
 
   const loginHandler: LoginHandler = {
-    loginCheck() {
+    str: "STRING",
+    makeX(n: number) {
+      setX(n);
+    },
+    focusId() {
+      idRef.current?.focus();
+    },
+    getName() {
+      return nameRef.current?.value || "";
+    },
+    validate() {
       const id = Number(idRef.current?.value);
       const name = nameRef.current?.value;
+
       if (!id || isNaN(id)) {
-        alert("Input the id!");
+        alert("Input the user id!");
         idRef.current?.focus();
-        return;
+        return false;
       } else if (!name) {
-        alert("Input the name!");
+        alert("Input the user name!");
         nameRef.current?.focus();
-        return;
+        return false;
       }
+
+      return true;
     },
   };
+
   useImperativeHandle(loginHandlerRef, () => loginHandler);
 
   const makeLogin = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     const id = Number(idRef.current?.value);
-    const name = nameRef.current?.value;
-    if (!id || isNaN(id)) {
-      alert("Input the id!");
-      idRef.current?.focus();
-      return;
-    } else if (!name) {
-      alert("Input the name!");
-      nameRef.current?.focus();
-      return;
-    }
+    const name = nameRef.current?.value ?? "";
 
     login(id, name);
   };
-
+  const { login } = useSession();
   return (
     <form onSubmit={makeLogin}>
       <div>
-        LoginID:
+        LoginID({x}):
         <input ref={idRef} type="number" />
       </div>
       <div>

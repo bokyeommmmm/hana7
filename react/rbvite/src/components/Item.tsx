@@ -1,4 +1,3 @@
-//Item.tsx
 import { useRef, useState, type FormEvent } from "react";
 import type { Cart } from "../App";
 

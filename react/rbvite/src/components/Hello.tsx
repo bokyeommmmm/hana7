@@ -1,47 +1,54 @@
 import {
+  use,
   useImperativeHandle,
   type ForwardedRef,
   type PropsWithChildren,
   type RefObject,
 } from "react";
-//{name : '홍길동'}
+import { CounterContext } from "../contexts/counter/CounterContext";
 
 export type HelloHandler = {
+  xx: string;
   sayHello: () => void;
 };
-type props = {
+
+type Props = {
   name: string;
   age: number;
-  plusCount: () => void;
-  //   children: ReactNode; //propswithchildren이 있으면 쓸일없다.
   helloButtonRef: RefObject<HTMLButtonElement | null>;
-  ref: ForwardedRef<HelloHandler>;
+  refx: ForwardedRef<HelloHandler>;
 };
+
+// {name: '홍길동'}
 export default function Hello({
   name,
   age,
-  plusCount,
   helloButtonRef,
   children,
-  ref,
-}: PropsWithChildren<props>) {
+  refx,
+}: PropsWithChildren<Props>) {
+  // const { plusCount } = useCounter();
+  const { plusCount } = use(CounterContext);
+
   const helloHandler = {
+    xx: "XXXX",
     sayHello() {
-      alert(`Hello, mr. ${name}!`);
+      alert(`Hello, Mr.${name}!`);
     },
   };
-  //ref.current=helloHandler
-  useImperativeHandle(ref, () => helloHandler);
+
+  // refx.current = helloHandler;
+  useImperativeHandle(refx, () => helloHandler);
+
   return (
-    <>
-      <div>
+    <div className="border">
+      <h3>
         Hello {name} <small>({age})</small>
-      </div>
+      </h3>
       <div>{children}</div>
       <button ref={helloButtonRef} onClick={plusCount}>
         count + 1
       </button>
-      {/* onClick : 이벤트리스너 */}
-    </>
+    </div>
   );
 }
