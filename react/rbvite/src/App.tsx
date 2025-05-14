@@ -45,9 +45,11 @@ function App() {
   return (
     <>
       <h2>count: {count}</h2>
+
       <SessionProvider>
         <My logoutButtonRef={logoutButtonRef} />
       </SessionProvider>
+
       <Hello
         name={"홍길동"}
         age={33}

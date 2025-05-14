@@ -1,4 +1,4 @@
-import { createContext, type RefObject } from "react";
+import { createContext, createRef, type RefObject } from "react";
 import type { Cart, LoginFn, Session } from "../../App";
 import type { LoginHandler } from "../../components/Login";
 
@@ -23,8 +23,9 @@ export const SampleSession: Session = {
 };
 
 export const SessionContext = createContext<SessionContextProps>({
+  //context 저장소 만듦
   session: SampleSession,
-  loginHandlerRef: { current: null },
+  loginHandlerRef: createRef<LoginHandler>(),
   login: () => {},
   logout: () => {},
   removeItem: () => {},
