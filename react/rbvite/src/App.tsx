@@ -3,27 +3,10 @@ import "./App.css";
 import Hello, { type HelloHandler } from "./components/Hello";
 import My from "./components/My";
 import { useCounter } from "./contexts/counter/useCounter";
-import { SessionProvider } from "./contexts/session/SessionProvider";
-
-export type LoginUser = {
-  id: number;
-  name: string;
-};
-
-export type LoginFn = (id: number, name: string) => void;
-
-export type Cart = {
-  id: number;
-  name: string;
-  price: number;
-};
-
-export type Session = {
-  loginUser: LoginUser | null;
-  cart: Cart[];
-};
+import SessionProvider from "./contexts/session/SessionProvider";
 
 function App() {
+  // const [session, setSession] = useState<Session>(SampleSession);
   // const [count, setCount] = useState(0);
   const { count } = useCounter();
   // const { count } = useContext(CounterContext);
@@ -38,10 +21,6 @@ function App() {
   const logoutButtonRef = useRef<HTMLButtonElement>(null);
   const helloHandlerRef = useRef<HelloHandler>(null);
 
-  // const loginHandlerRef = useRef<LoginHandler>(null);
-
-  // const plusCount = () => setCount(c => c + 1);
-
   return (
     <>
       <h2>count: {count}</h2>
@@ -51,8 +30,7 @@ function App() {
       </SessionProvider>
 
       <Hello
-        name={"홍길동"}
-        age={33}
+        id={count + 1}
         helloButtonRef={helloButtonRef}
         refx={helloHandlerRef}
       >

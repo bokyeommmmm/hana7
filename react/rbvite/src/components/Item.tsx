@@ -1,21 +1,13 @@
 import { useRef, useState, type FormEvent } from "react";
-import type { Cart } from "../App";
+import { useSession, type Cart } from "../contexts/session/SessionContext";
 
 type Props = {
   item: Cart;
-  removeItem: (id: number) => void;
-  addItem: (name: string, price: number) => void;
-  editItem: (item: Cart) => void;
   toggleAdding?: () => void;
 };
 
-export default function Item({
-  item,
-  removeItem,
-  addItem,
-  editItem,
-  toggleAdding,
-}: Props) {
+export default function Item({ item, toggleAdding }: Props) {
+  const { removeItem, addItem, editItem } = useSession();
   const [isEditing, setEditing] = useState(!item.id);
   const [hasDirty, setDirty] = useState(false);
 
