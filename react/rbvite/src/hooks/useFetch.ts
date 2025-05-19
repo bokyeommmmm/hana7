@@ -12,7 +12,7 @@ export const useFetch = <T>(url: string, depArr: unknown[] = []) => {
     setLoading(true);
     fetch(url, { signal })
       .then((res) => {
-        console.log("🚀 res:", res);
+        // console.log('🚀 res:', res);
         if (!res.ok) {
           setError(`${res.status} ${res.statusText || "Error"}`);
         } else {

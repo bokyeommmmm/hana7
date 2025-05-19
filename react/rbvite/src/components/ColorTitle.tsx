@@ -4,7 +4,7 @@ const ColorTitle = ({
   color,
   children,
 }: PropsWithChildren<{ color: string }>) => {
-  console.log("@@@ ColorTitle!!", color);
+  // console.log('@@@ ColorTitle!!', color);
   return <h2 style={{ color }}>{children}</h2>;
 };
 

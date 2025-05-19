@@ -1,12 +1,13 @@
-import { useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useSession, type Cart } from "../contexts/session/SessionContext";
 
 type Props = {
   item: Cart;
+  addExpectPrice: (price: number) => void;
   toggleAdding?: () => void;
 };
 
-export default function Item({ item, toggleAdding }: Props) {
+export default function Item({ item, addExpectPrice, toggleAdding }: Props) {
   const { removeItem, addItem, editItem } = useSession();
   const [isEditing, setEditing] = useState(!item.id);
   const [hasDirty, setDirty] = useState(false);
@@ -47,6 +48,7 @@ export default function Item({ item, toggleAdding }: Props) {
     setEditing(false);
     setDirty(false);
     if (toggleAdding) toggleAdding();
+    if (!item.id && itemPriceRef.current) addExpectPrice(0);
   };
 
   const checkDirty = () => {
@@ -55,6 +57,11 @@ export default function Item({ item, toggleAdding }: Props) {
         Number(itemPriceRef.current?.value) !== item.price
     );
   };
+
+  useEffect(() => {
+    if (!item.id) addExpectPrice(item.price);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
@@ -74,7 +81,11 @@ export default function Item({ item, toggleAdding }: Props) {
             defaultValue={item.price}
             placeholder="금액..."
             className="w-sm"
-            onChange={checkDirty}
+            onChange={(evt) => {
+              checkDirty();
+              if (!item.id)
+                addExpectPrice(item.id ? 0 : Number(evt.target.value));
+            }}
           />
           <button type="reset" className="p-sm">
             취소
