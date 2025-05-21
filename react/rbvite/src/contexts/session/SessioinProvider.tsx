@@ -39,7 +39,7 @@ const reducer = (session: Session, { type, payload }: Action) => {
       cart = [...session.cart, payload];
       break;
     case 'EDIT-ITEM':
-      cart = session.cart.filter(item =>
+      cart = session.cart.map(item =>
         item.id === payload.id ? payload : item
       );
       break;

@@ -1,21 +1,24 @@
-import { useEffect, useRef, useState, type FormEvent } from "react";
-import { useSession, type Cart } from "../contexts/session/SessionContext";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { useSession } from '../contexts/session/SessionContext';
+import { useParams } from 'react-router-dom';
 
 type Props = {
-  item: Cart;
-  addExpectPrice: (price: number) => void;
+  addExpectPrice?: (price: number) => void;
   toggleAdding?: () => void;
 };
 
+// /items/:id  <-  /items/2
 export default function Item({ addExpectPrice, toggleAdding }: Props) {
   const {
     session: { cart },
   } = useSession();
-  const navigate = useNavigate();
   const param = useParams();
-  const item = cart.find((item) => item.id === Number(param.id));
-  if (!item) return navigate("/not-found");
+  const item = cart.find(item => item.id === Number(param.id)) || {
+    id: 0,
+    name: '',
+    price: 3000,
+  };
+
   const { removeItem, addItem, editItem } = useSession();
   const [isEditing, setEditing] = useState(!item.id);
   const [hasDirty, setDirty] = useState(false);
@@ -27,16 +30,16 @@ export default function Item({ addExpectPrice, toggleAdding }: Props) {
     evt.preventDefault();
     const name = itemNameRef.current?.value;
     const price = itemPriceRef.current?.value;
-    console.log("🚀 name:", name, price);
+    console.log('🚀 name:', name, price);
 
     if (!name) {
-      alert("상품명을 입력하세요!");
+      alert('상품명을 입력하세요!');
       itemNameRef.current?.focus();
       return;
     }
 
     if (!price) {
-      alert("금액을 입력하세요!");
+      alert('금액을 입력하세요!');
       itemPriceRef.current?.focus();
       return;
     }
@@ -56,7 +59,7 @@ export default function Item({ addExpectPrice, toggleAdding }: Props) {
     setEditing(false);
     setDirty(false);
     if (toggleAdding) toggleAdding();
-    if (!item.id && itemPriceRef.current) addExpectPrice(0);
+    if (!item.id && itemPriceRef.current && addExpectPrice) addExpectPrice(0);
   };
 
   const checkDirty = () => {
@@ -67,46 +70,47 @@ export default function Item({ addExpectPrice, toggleAdding }: Props) {
   };
 
   useEffect(() => {
-    if (!item.id) addExpectPrice(item.price);
+    if (!item.id && addExpectPrice) addExpectPrice(item.price);
   }, []);
 
   return (
     <>
+      <h2>Item: {item.name}</h2>
       {isEditing ? (
         <form onSubmit={submitItem} onReset={resetItem}>
           <input
-            type="text"
+            type='text'
             ref={itemNameRef}
-            className="w-sm"
+            className='w-sm'
             defaultValue={item.name}
-            placeholder="상품명..."
+            placeholder='상품명...'
             onChange={checkDirty}
           />
           <input
-            type="number"
+            type='number'
             ref={itemPriceRef}
             defaultValue={item.price}
-            placeholder="금액..."
-            className="w-sm"
-            onChange={(evt) => {
+            placeholder='금액...'
+            className='w-sm'
+            onChange={evt => {
               checkDirty();
-              if (!item.id)
+              if (!item.id && addExpectPrice)
                 addExpectPrice(item.id ? 0 : Number(evt.target.value));
             }}
           />
-          <button type="reset" className="p-sm">
+          <button type='reset' className='p-sm'>
             취소
           </button>
-          <button type="submit" className="p-sm" disabled={!hasDirty}>
-            ✔️ {item.id ? "수정" : "추가"}
+          <button type='submit' className='p-sm' disabled={!hasDirty}>
+            ✔️ {item.id ? '수정' : '추가'}
           </button>
         </form>
       ) : (
         <div>
-          <a href="#" onClick={() => setEditing(!isEditing)}>
+          <a href='#' onClick={() => setEditing(!isEditing)}>
             {item.id}. {item.name} ({item.price.toLocaleString()})
           </a>
-          <button onClick={() => removeItem(item.id)} className="p-sm">
+          <button onClick={() => removeItem(item.id)} className='p-sm'>
             x
           </button>
         </div>

@@ -1,9 +1,9 @@
-import { use, useActionState, useEffect, useOptimistic, useState } from 'react';
+import { useActionState, useOptimistic, useState } from 'react';
 import { useFormStatus } from 'react-dom';
 type User = { id: number; name: string };
 
 async function searchUser(userId: string) {
-  return fetch<Comp>(
+  return fetch(
     `https://jsonplaceholder.typicode.com/users/${userId.at(-1)}`
   ).then(res => res.json());
 }
@@ -69,5 +69,5 @@ function DesignedButton() {
 }
 
 function Spinner() {
-  return <strong>Pending...</strong>;
+  return <strong>Pending.....</strong>;
 }

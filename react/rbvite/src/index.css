@@ -80,6 +80,10 @@ ul {
   margin-left: 0.5rem;
 }
 
+.m-1 {
+  margin: 1rem;
+}
+
 .w-sm {
   margin-left: 0.5rem;
   width: 4rem;

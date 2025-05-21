@@ -29,7 +29,7 @@ export default function Items() {
 
   const qRef = useRef<HTMLInputElement>(null);
   const [searchParams, setSearchParams] = useSearchParams();
-  console.log('🚀 searchParams:', searchParams);
+  // console.log('🚀 searchParams:', searchParams);
   const q = searchParams.get('q') ?? '';
   useEffect(() => {
     if (!qRef.current) return;

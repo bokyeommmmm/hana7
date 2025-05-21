@@ -1,37 +1,32 @@
-import { Link, Outlet, useParams } from "react-router-dom";
-import { useSession } from "../contexts/session/SessionContext";
+import { Outlet, useOutletContext, useParams } from 'react-router-dom';
+import { type Cart, useSession } from '../contexts/session/SessionContext';
 
-export default function ItemDetail() {
-  const { id } = useParams();
+export default function ItemDetailLayout() {
   const {
     session: { cart },
   } = useSession();
+  const { curItem } = useOutletContext<{ curItem: Cart }>();
+  console.log('🚀 ItemDetailLayout.curItem:', curItem);
+  const { id } = useParams();
 
-  const item = cart.find((item) => item.id === Number(id));
-
-  if (!item) return <p>존재하지 않는 상품입니다.</p>;
+  let item = curItem;
+  if (!curItem) {
+    item = cart.find(_item => _item.id === Number(id))!;
+  }
+  if (!item) {
+    return <NotFoundItem id={id} />;
+  }
 
   return (
     <>
-      <div style={{ border: "2px solid red", padding: 20 }}>
-        {/* 여기에 아이템 링크 출력 */}
-
-        <h3>[{id}] 상세 레이아웃</h3>
-
-        <Outlet />
-      </div>
+      <h3>DetailLayout(사품명): {item.name}</h3>
       <div>
-        <h3>
-          [{item.id}] {item.name}
-        </h3>
-        <p>가격: {item.price.toLocaleString()} 원</p>
-        <Link to="edit">
-          <button>수정</button>
-        </Link>
-        <Link to="/items">
-          <button>목록으로</button>
-        </Link>
+        <Outlet context={{ curItem: item }} />
       </div>
     </>
   );
+}
+
+function NotFoundItem({ id }: { id: string | undefined }) {
+  return <h2>{id}번 상품을 찾을 수 없습니다!</h2>;
 }

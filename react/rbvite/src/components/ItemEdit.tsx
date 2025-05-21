@@ -1,28 +1,73 @@
-import { Link, useParams } from "react-router-dom";
-import { useSession } from "../contexts/session/SessionContext";
+import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import { useSession, type Cart } from '../contexts/session/SessionContext';
+import { useEffect, useRef, type FormEvent } from 'react';
+import { Link } from 'react-router-dom';
 
-export default function ItemDetail() {
+export default function ItemEdit() {
+  const { removeItem, editItem } = useSession();
+
+  const nameRef = useRef<HTMLInputElement>(null);
+  const priceRef = useRef<HTMLInputElement>(null);
+
+  const { curItem } = useOutletContext<{ curItem: Cart }>();
+  console.log('🚀 curItem:', curItem);
+
+  useEffect(() => {
+    if (!nameRef.current || !priceRef.current) return;
+    nameRef.current.value = curItem.name;
+    priceRef.current.value = curItem.price.toString();
+    nameRef.current.select();
+    nameRef.current.focus();
+  }, []);
+
   const { id } = useParams();
-  const {
-    session: { cart },
-  } = useSession();
+  const navigate = useNavigate();
 
-  const item = cart.find((item) => item.id === Number(id));
+  const saveItem = (evt: FormEvent) => {
+    evt.preventDefault();
+    console.log('ssssssssssssssssss');
+    const name = nameRef.current?.value || '';
+    const price = priceRef.current?.value;
+    let msg = '';
+    let ref = nameRef;
+    if (!name) {
+      msg = '상품명을 입력하세요!';
+      ref = nameRef;
+    } else if (!price) {
+      msg = '금액을 입력하세요!';
+      ref = priceRef;
+    }
 
-  if (!item) return <p>존재하지 않는 상품입니다.</p>;
+    if (msg) {
+      alert(msg);
+      ref.current?.focus();
+      return;
+    }
+
+    // eslint-disable-next-line react-hooks/react-compiler
+    curItem.name = name;
+    curItem.price = Number(price);
+    editItem({ ...curItem });
+    navigate(`/items/${id}`);
+  };
+
+  const deleteItem = () => {
+    removeItem(Number(id));
+    navigate('/items');
+  };
 
   return (
-    <div>
-      <h3>
-        [{item.id}] {item.name}
-      </h3>
-      <p>가격: {item.price.toLocaleString()}원</p>
-      <Link to="edit">
-        <button>수정</button>
-      </Link>
-      <Link to="/items">
-        <button>목록으로</button>
-      </Link>
-    </div>
+    <>
+      <form onSubmit={saveItem} onReset={deleteItem}>
+        <input type='text' ref={nameRef} placeholder='상품명...' />
+        <input type='number' ref={priceRef} placeholder='금액...' />
+
+        <Link to={`/items/${id}`} className='m-1'>
+          취소
+        </Link>
+        <button type='reset'>삭제</button>
+        <button type='submit'>수정</button>
+      </form>
+    </>
   );
 }
