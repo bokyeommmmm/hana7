@@ -1,73 +1,56 @@
-import { useRef } from "react";
-import "./App.css";
-import Hello, { type HelloHandler } from "./components/Hello";
-import My from "./components/My";
-import { useCounter } from "./contexts/counter/useCounter";
-import { SessionProvider } from "./contexts/session/SessionProvider";
-
-export type LoginUser = {
-  id: number;
-  name: string;
-};
-
-export type LoginFn = (id: number, name: string) => void;
-
-export type Cart = {
-  id: number;
-  name: string;
-  price: number;
-};
-
-export type Session = {
-  loginUser: LoginUser | null;
-  cart: Cart[];
-};
+import { useRef } from 'react';
+import './App.css';
+import Hello, { type HelloHandler } from './components/Hello';
+import My from './components/My';
+import SessionProvider from './contexts/session/SessioinProvider';
+import Nav from './Nav';
+import { Route, Routes } from 'react-router-dom';
+import Login from './components/Login';
+import Home from './components/Home';
+import Posts from './components/Posts';
+import { NotFound } from './NotFound';
+import ItemLayout from './components/ItemLayout';
+import ItemDetail from './components/ItemDetail';
+import ItemDetailLayout from './components/ItemDetailLayout';
+import ItemEdit from './components/ItemEdit';
 
 function App() {
-  // const [count, setCount] = useState(0);
-  const { count } = useCounter();
-  // const { count } = useContext(CounterContext);
-  // const { count } = use(CounterContext);
-  // const x = 9;
-  // if (x > 0) {
-  //   const { count } = use(CounterContext);
-  //   console.log('🚀 count:', count);
-  // }
-
   const helloButtonRef = useRef<HTMLButtonElement>(null);
   const logoutButtonRef = useRef<HTMLButtonElement>(null);
   const helloHandlerRef = useRef<HelloHandler>(null);
 
-  // const loginHandlerRef = useRef<LoginHandler>(null);
-
-  // const plusCount = () => setCount(c => c + 1);
-
   return (
     <>
-      <h2>count: {count}</h2>
-
       <SessionProvider>
-        <My logoutButtonRef={logoutButtonRef} />
+        <Nav />
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/login' element={<Login />} />
+          <Route
+            path='/my'
+            element={<My logoutButtonRef={logoutButtonRef} />}
+          />
+          <Route
+            path='/hello'
+            element={
+              <Hello
+                id={1}
+                helloButtonRef={helloButtonRef}
+                refx={helloHandlerRef}
+              />
+            }
+          />
+          <Route path='/posts' element={<Posts />} />
+          <Route path='/items' element={<ItemLayout />}>
+            {/* <Route index element={<Items />} /> */}
+            <Route path=':id' element={<ItemDetailLayout />}>
+              <Route index element={<ItemDetail />} />
+              <Route path='edit' element={<ItemEdit />} />
+            </Route>
+          </Route>
+          <Route path='*' element={<NotFound />} />
+        </Routes>
       </SessionProvider>
-
-      <Hello
-        name={"홍길동"}
-        age={33}
-        helloButtonRef={helloButtonRef}
-        refx={helloHandlerRef}
-      >
-        반갑습니다!
-      </Hello>
-      <button onClick={() => helloButtonRef.current?.click()}>
-        Click Hello
-      </button>
-      <button onClick={() => logoutButtonRef.current?.click()}>
-        Logout in App
-      </button>
-
-      <button onClick={() => console.log(helloHandlerRef.current?.xx)}>
-        sayHello
-      </button>
     </>
   );
 }
