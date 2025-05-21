@@ -4,11 +4,11 @@ import {
   type ForwardedRef,
   type PropsWithChildren,
   type RefObject,
-} from "react";
-import { CounterContext } from "../contexts/counter/CounterContext";
-import { useFetch } from "../hooks/useFetch";
-import { useToggle } from "../hooks/useToggle";
-import LabelInput from "./LabelInput";
+} from 'react';
+import { CounterContext } from '../contexts/counter/CounterContext';
+import { useFetch } from '../hooks/useFetch';
+import { useToggle } from '../hooks/useToggle';
+import LabelInput from './LabelInput';
 
 export type HelloHandler = {
   xx: string;
@@ -37,7 +37,7 @@ export default function Hello({
   const [reloadFlag, toggleReload] = useToggle();
 
   const helloHandler = {
-    xx: "XXXX",
+    xx: 'XXXX',
     sayHello() {
       alert(`Hello, Mr.${name}!`);
     },
@@ -56,9 +56,9 @@ export default function Hello({
   ]);
 
   return (
-    <div className="border">
+    <div className='border'>
       <h3>
-        Hello, {isLoading ? "..." : user?.name}
+        Hello, {isLoading ? '...' : user?.name}
         <div>{error}</div>
       </h3>
       <div>
@@ -68,8 +68,8 @@ export default function Hello({
         count + 1
       </button>
       <button onClick={toggleReload}>Reload</button>
-      <LabelInput label="email" />
-      <LabelInput label="nickname" />
+      <LabelInput label='email' />
+      <LabelInput label='nickname' />
     </div>
   );
 }

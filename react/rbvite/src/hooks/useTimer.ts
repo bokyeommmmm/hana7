@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from 'react';
 
 export const useDebounce = <
   T extends (...args: Parameters<T>) => ReturnType<T>
@@ -27,7 +27,7 @@ export const useThrottle = <
   const timerRef = useRef<ReturnType<typeof setTimeout>>(ref);
 
   useEffect(() => {
-    console.log("****>>", timerRef.current);
+    console.log('****>>', timerRef.current);
     if (timerRef.current) return;
 
     timerRef.current = setTimeout(() => {
@@ -47,7 +47,7 @@ export const useTimeout = <T extends (...args: Parameters<T>) => ReturnType<T>>(
 
   const setTheTimer = useCallback(() => {
     timerRef.current = setTimeout(() => {
-      console.log("🚀 args:", args);
+      console.log('🚀 args:', args);
       cb(...args);
     }, delay);
   }, depArr);
@@ -76,16 +76,16 @@ export const useInterval = <
   ...args: Parameters<T>
 ) => {
   const timerRef = useRef<ReturnType<typeof setInterval>>(undefined);
-  console.log("SET-INTERVAL", timerRef.current, delay);
+  console.log('SET-INTERVAL', timerRef.current, delay);
 
   const clear = useCallback(() => {
-    console.log("Clear!!", timerRef.current, delay);
+    console.log('Clear!!', timerRef.current, delay);
     clearInterval(timerRef.current);
   }, []);
 
   const setTheTimer = useCallback(() => {
     timerRef.current = setInterval(() => cb(...args), delay);
-    console.log("**************", timerRef.current, delay);
+    console.log('**************', timerRef.current, delay);
   }, []);
 
   useEffect(() => {
@@ -95,7 +95,7 @@ export const useInterval = <
   }, [delay, ...args]);
 
   const reset = useCallback(() => {
-    console.log("RESET!!", timerRef.current, delay);
+    console.log('RESET!!', timerRef.current, delay);
     clear();
     setTheTimer();
   }, []);
@@ -109,7 +109,7 @@ export const useTimeoutOld = <T extends unknown[]>(
   delay: number,
   ...args: T
 ) => {
-  console.log("🚀 Timeout.args:", args);
+  console.log('🚀 Timeout.args:', args);
   const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const clear = () => clearTimeout(timerRef.current);
 

@@ -1,4 +1,4 @@
-import { useState, useTransition } from "react";
+import { useState, useTransition } from 'react';
 type Comp = { id: number; name: string };
 
 // async function searchUser(userId: string) {
@@ -7,23 +7,23 @@ type Comp = { id: number; name: string };
 //   ).then(res => res.json());
 // }
 async function searchUser(userId: string) {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve({ id: userId, name: "Sampler" }), 1000);
+  return new Promise(resolve => {
+    setTimeout(() => resolve({ id: userId, name: 'Sampler' }), 1000);
   });
 }
 
 export default function Trans() {
-  const [str, setStr] = useState("");
+  const [str, setStr] = useState('');
   const [list, setList] = useState<Comp[]>([]);
 
   const [isPending, startTransition] = useTransition();
 
   const search = (formData: FormData) => {
-    const value = formData.get("value")?.toString() ?? "";
+    const value = formData.get('value')?.toString() ?? '';
     setStr(value);
     startTransition(async () => {
       const data = (await searchUser(value)) as Comp;
-      console.log("🚀 data:", data);
+      console.log('🚀 data:', data);
       setList([data]);
     });
     // startTransition(() => {
@@ -41,7 +41,7 @@ export default function Trans() {
     <>
       <h3>{isPending ? <Spinner /> : str}</h3>
       <form action={search}>
-        <input type="text" name="value" placeholder="userId..." />
+        <input type='text' name='value' placeholder='userId...' />
       </form>
       <ul>
         {list.map(({ id, name }) => (

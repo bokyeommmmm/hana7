@@ -4,10 +4,10 @@ import {
   useRef,
   useState,
   type FormEvent,
-} from "react";
-import { useSession } from "../contexts/session/SessionContext";
-import { useCounter } from "../contexts/counter/useCounter";
-import { useInterval, useTimeout } from "../hooks/useTimer";
+} from 'react';
+import { useSession } from '../contexts/session/SessionContext';
+import { useCounter } from '../contexts/counter/useCounter';
+import { useInterval, useTimeout } from '../hooks/useTimer';
 
 export type LoginHandler = {
   str: string;
@@ -17,7 +17,7 @@ export type LoginHandler = {
   validate: () => boolean;
 };
 
-export default function Login({ title }: { title: string }) {
+export default function Login({ title = 'LOGIN' }: { title?: string }) {
   const { login, loginHandler: loginHandlerRef } = useSession();
   const { plusCount, minusCount } = useCounter();
   const [x, setX] = useState(0);
@@ -25,7 +25,7 @@ export default function Login({ title }: { title: string }) {
   const nameRef = useRef<HTMLInputElement>(null);
 
   const loginHandler: LoginHandler = {
-    str: "STRING",
+    str: 'STRING',
     makeX(n: number) {
       setX(n);
     },
@@ -33,18 +33,18 @@ export default function Login({ title }: { title: string }) {
       idRef.current?.focus();
     },
     getName() {
-      return nameRef.current?.value || "";
+      return nameRef.current?.value || '';
     },
     validate() {
       const id = Number(idRef.current?.value);
       const name = nameRef.current?.value;
 
       if (!id || isNaN(id)) {
-        alert("Input the user id!");
+        alert('Input the user id!');
         idRef.current?.focus();
         return false;
       } else if (!name) {
-        alert("Input the user name!");
+        alert('Input the user name!');
         nameRef.current?.focus();
         return false;
       }
@@ -58,7 +58,7 @@ export default function Login({ title }: { title: string }) {
   const makeLogin = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     const id = Number(idRef.current?.value);
-    const name = nameRef.current?.value ?? "";
+    const name = nameRef.current?.value ?? '';
 
     login(id, name);
   };
@@ -77,8 +77,8 @@ export default function Login({ title }: { title: string }) {
   // }, []);
 
   // interval도 만들었다면,
-  console.log("xxxxxx>>", x);
-  const { reset, clear } = useInterval(() => setX((x) => x + 1), 1000);
+  console.log('xxxxxx>>', x);
+  const { reset, clear } = useInterval(() => setX(x => x + 1), 1000);
   // reset(); // Danger!! call every render
   useTimeout(reset, 2000);
   useTimeout(clear, 5000);
@@ -90,20 +90,20 @@ export default function Login({ title }: { title: string }) {
   return (
     <>
       <title>{tit}</title>
-      <meta name="Author" content={tit} />
+      <meta name='Author' content={tit} />
       <form onSubmit={makeLogin}>
         <div>
           LoginID({x}):
-          <input ref={idRef} type="number" />
+          <input ref={idRef} type='number' />
         </div>
         <div>
           LoginName:
-          <input type="text" ref={nameRef} />
+          <input type='text' ref={nameRef} />
         </div>
-        <button type="reset">Cancel</button>
-        <button type="submit">Login</button>
+        <button type='reset'>Cancel</button>
+        <button type='submit'>Login</button>
       </form>
-      <button onClick={() => setX((x) => x + 1)}>Set X</button>
+      <button onClick={() => setX(x => x + 1)}>Set X</button>
     </>
   );
 }

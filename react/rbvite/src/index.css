@@ -84,3 +84,15 @@ ul {
   margin-left: 0.5rem;
   width: 4rem;
 }
+
+.red {
+  color: red;
+}
+
+.blue {
+  color: blue;
+}
+
+.underline {
+  text-decoration: underline;
+}

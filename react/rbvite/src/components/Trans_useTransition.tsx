@@ -1,14 +1,14 @@
-import { useState, useTransition, type ChangeEvent } from "react";
+import { useState, useTransition, type ChangeEvent } from 'react';
 type Comp = { id: number; name: string };
 
 async function searchUser(userId: string) {
   return fetch(
     `https://jsonplaceholder.typicode.com/users/${userId.at(-1)}`
-  ).then((res) => res.json());
+  ).then(res => res.json());
 }
 
 export default function Trans() {
-  const [str, setStr] = useState("");
+  const [str, setStr] = useState('');
   const [list, setList] = useState<Comp[]>([]);
 
   const [isPending, startTransition] = useTransition();
@@ -18,7 +18,7 @@ export default function Trans() {
     setStr(value);
     startTransition(async () => {
       const data = await searchUser(value);
-      console.log("🚀 data:", data);
+      console.log('🚀 data:', data);
       setList([data]);
     });
     // startTransition(() => {
@@ -32,7 +32,7 @@ export default function Trans() {
     <>
       <h3>{isPending ? <Spinner /> : str}</h3>
       <form>
-        <input type="text" onChange={handleChange} placeholder="trans..." />
+        <input type='text' onChange={handleChange} placeholder='trans...' />
       </form>
       <ul>
         {list.map(({ id, name }) => (

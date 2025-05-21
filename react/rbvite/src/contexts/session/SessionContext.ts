@@ -1,5 +1,5 @@
-import { createContext, createRef, use, type RefObject } from "react";
-import type { LoginHandler } from "../../components/Login";
+import { createContext, createRef, use, type RefObject } from 'react';
+import type { LoginHandler } from '../../components/Login';
 
 export type LoginUser = {
   id: number;

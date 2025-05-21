@@ -1,4 +1,4 @@
-import { useFormStatus } from "react-dom";
+import { useFormStatus } from 'react-dom';
 
 type Props = {
   inpName?: string;
@@ -6,8 +6,8 @@ type Props = {
 };
 
 export default function SearchButton({
-  inpName = "searchStr",
-  label = "Search",
+  inpName = 'searchStr',
+  label = 'Search',
 }: Props) {
   const { pending, data } = useFormStatus();
 

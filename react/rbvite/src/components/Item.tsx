@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useSession, type Cart } from "../contexts/session/SessionContext";
+import { useNavigate, useParams } from "react-router-dom";
 
 type Props = {
   item: Cart;
@@ -7,7 +8,14 @@ type Props = {
   toggleAdding?: () => void;
 };
 
-export default function Item({ item, addExpectPrice, toggleAdding }: Props) {
+export default function Item({ addExpectPrice, toggleAdding }: Props) {
+  const {
+    session: { cart },
+  } = useSession();
+  const navigate = useNavigate();
+  const param = useParams();
+  const item = cart.find((item) => item.id === Number(param.id));
+  if (!item) return navigate("/not-found");
   const { removeItem, addItem, editItem } = useSession();
   const [isEditing, setEditing] = useState(!item.id);
   const [hasDirty, setDirty] = useState(false);
@@ -60,7 +68,6 @@ export default function Item({ item, addExpectPrice, toggleAdding }: Props) {
 
   useEffect(() => {
     if (!item.id) addExpectPrice(item.price);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
