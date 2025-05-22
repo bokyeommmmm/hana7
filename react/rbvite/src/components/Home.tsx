@@ -3,6 +3,7 @@ import { useCounter } from '../contexts/counter/useCounter';
 import { useRef } from 'react';
 import type { HelloHandler } from './Hello';
 import { useLocation } from 'react-router-dom';
+import HanaButton from './atoms/HanaButton';
 
 export default function Home() {
   const { count } = useCounter();
@@ -21,9 +22,25 @@ export default function Home() {
         <FaHome /> HOME ({count})
       </h2>
 
+      <HanaButton
+        variant='primary'
+        size='md'
+        onClick={() => alert('HanaButton')}
+      >
+        Click Primary
+      </HanaButton>
+      <HanaButton
+        variant='danger'
+        size='sm'
+        onClick={() => alert('HanaButton')}
+      >
+        Click Danger
+      </HanaButton>
+
       <button onClick={() => helloButtonRef.current?.click()}>
         Click Hello
       </button>
+
       <button onClick={() => logoutButtonRef.current?.click()}>
         Logout in App
       </button>
