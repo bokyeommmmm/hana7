@@ -1,47 +1,26 @@
-'use client';
-
+import HelloSearchParams from '@/app/components/HelloSearchParams';
 import Link from 'next/link';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { PropsWithChildren, useLayoutEffect, useState } from 'react';
+import { PropsWithChildren, Suspense } from 'react';
 
 export default function HelloLayout({ children }: PropsWithChildren) {
-  const [state, setState] = useState('');
-
-  const sparams = useSearchParams();
-  // console.log('sparams:', sparams.get('q'));
-
-  useLayoutEffect(() => {
-    setState(sparams.get('q') ?? '');
-  }, [sparams]);
-
-  const urlParams = new URLSearchParams(sparams.toString());
-  const router = useRouter();
-  const pathname = usePathname();
-  console.log(' pathname:', pathname);
-  const setSearchParams = () => {
-    urlParams.set('q', `${new Date()}`);
-    urlParams.set('r', `rrr`);
-
-    router.push(`/hello?${urlParams.toString()}`);
-  };
-
   return (
-    <>
-      <h1>This is Hello Layout:{state}</h1>
+    <div className='border border-green-500 p-1'>
       <ul className='flex gap-3'>
         <li>
-          <Link href='/hello/morning'>morning</Link>
+          <Link href='/hello/morning'>Morning</Link>
         </li>
         <li>
-          <Link href='/hello/afternoon'>afternoon</Link>
+          <Link href='/hello/afternoon'>Afternoon</Link>
         </li>
         <li>
-          <Link href='/hello/evening'>evening</Link>
+          <Link href='/hello/evening'>Evening</Link>
         </li>
       </ul>
       <hr />
+      <Suspense fallback={<h1>..........</h1>}>
+        <HelloSearchParams />
+      </Suspense>
       <div>{children}</div>
-      <button onClick={setSearchParams}>setSearchParams</button>
-    </>
+    </div>
   );
 }
